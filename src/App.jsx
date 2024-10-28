@@ -13,6 +13,7 @@ function App() {
     try {
       const response = await axios.post(basePoint, novoNome); // Enviando novoNome
       setNomes([...nomes, response.data]); // Atualiza a lista de nomes
+      console.log('Nome inserdo', response.data)
       setNovoNome({ nome: "" }); // Limpa o campo de entrada
     } catch (error) {
       console.log(`Error`, error);
@@ -25,6 +26,15 @@ function App() {
       setNomes(response.data); // Atualiza o estado com os dados recebidos
     } catch (error) {
       console.log(`erro ao carregar nomes`, error);
+    }
+  };
+
+  const apagarNome = async (id) => {
+    try {
+      const response = await axios.delete(`${basePoint}/${id}`);
+      console.log("Nome excluido",response.data);
+    } catch (error) {
+      console.log(`erro ao apagar nomes`, error);
     }
   };
 
@@ -53,8 +63,8 @@ function App() {
           nomes.map((nome) => (
             <div className="card" key={nome.id}>
               <p>{nome.nome}</p>
-              {/* <button type="button">Editar</button>
-              <button type="button">Apagar</button> */}
+              {/* <button type="button" onClick={()=> editarNome(nome)}>Editar</button> */}
+              <button type="button" onClick={()=> apagarNome(nome.id)}>Apagar</button> 
             </div>
             
           ))}
