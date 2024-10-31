@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 function App() {
+
+  const API_KEY = ``
   const basePoint = `http://localhost:3000/nomes`;
   const [nomes, setNomes] = useState([]); 
   const [novoNome, setNovoNome] = useState({
@@ -19,6 +21,32 @@ function App() {
       console.log(`Error`, error);
     }
   };
+
+  const getGeoCode = async (endereco) =>{
+    try{
+
+      const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
+      params: {
+        address: endereco,   // Endereço a ser geocodificado
+        key: API_KEY        // Chave de API para autenticação
+      }
+    });
+
+    const location = response.data.results[0].geometry.location;
+    const latitude = location.lat;
+    const longitude = location.lng;
+
+    console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+    console.log(response.data)
+
+    }catch(error){
+      console.log(`Error`, error);
+    }
+  }
+
+getGeoCode('54774400')
+
+
 
   const carregarDados = async () => {
     try {
